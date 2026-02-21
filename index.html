@@ -86,7 +86,7 @@
 		if(savingOn === true) {
 		localStorage.setItem("total",total);
 		};
-		average = (starts /(total))*100;
+		average = Math.round(((starts /(total))*100)*10000)/10000;
 		document.getElementById("average").textContent = average;
 		if(savingOn === true) {
 		localStorage.setItem("average",average);
