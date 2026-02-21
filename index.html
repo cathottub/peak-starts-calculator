@@ -118,6 +118,14 @@
 		savingOn = !savingOn;
 		document.getElementById("savingOn").textContent = savingOn ? "ENABLED" : "DISABLED";
 		localStorage.setItem("savingOn",savingOn);
+		if(savingOn ===true){
+		localStorage.setItem("starts",starts);
+		localStorage.setItem("noStarts",noStarts);
+		localStorage.setItem("average",average);
+		localStorage.setItem("total",total);
+		localStorage.setItem("consecutiveStarts",consecutiveStarts);
+		localStorage.setItem("consecutiveNoStarts",consecutiveNoStarts);
+		}
 		}
 		
 		window.onload = function() {
