@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Peak Start Percentage Calculator</title>
+</head>
+<body>
+
+	<h1>Peak Start Percentage Calculator</h1>
+	
+	<button onclick="incrementStarts()">Start</button>
+	<p>Starts: <span id="starts">0</span></p>
+	
+	<button onclick="incrementNoStarts()">No Start</button>
+	<p>No-Starts: <span id="noStarts">0</span></p>
+	
+	<button onclick="reset()">Reset</button>
+	
+	<p>Total: <span id="total">0</span></p>
+	
+	<p>Average: <span id="average">0</span>%</p>
+	
+	<button onclick="toggleSaving()">Toggle Saving (WIP, NOT FUNCTIONAL)</button>
+	<p>Saving Enabled? <span id="savingOn">DISABLED</span></p>
+	
+	<script>
+		let starts = 0;
+		let noStarts = 0;
+		let average = 0;
+		let total = 0;
+		let savingOn = false;
+		
+		function incrementStarts() {
+		starts++;
+		document.getElementById("starts").textContent = starts;
+		doAverage();
+		}
+		
+		function incrementNoStarts(){
+		noStarts++;
+		document.getElementById("noStarts").textContent = noStarts;
+		doAverage();
+		}
+		
+		function doAverage(){
+		total = starts + noStarts;
+		document.getElementById("total").textContent = total;
+		average = (starts /(total))*100;
+		document.getElementById("average").textContent = average;
+		}
+		
+		function reset(){
+		starts = 0;
+		noStarts = 0;
+		average = 0;
+		total = 0;
+		document.getElementById("starts").textContent = starts;
+		document.getElementById("noStarts").textContent = noStarts;
+		document.getElementById("total").textContent = total;
+		document.getElementById("average").textContent = average;
+		}
+		
+		function toggleSaving() {
+		savingOn = !savingOn;
+		document.getElementById("savingOn").textContent = savingOn ? "ENABLED" : "DISABLED";
+		}
+		
+	</script>
+	
+</body>
+</html>
