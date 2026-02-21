@@ -2,25 +2,44 @@
 <html>
 <head>
 	<title>Peak Start Percentage Calculator</title>
+	
+	<style>
+		.bigButton {
+		font-size: 1.5rem;
+		width: 100%;
+		max-width: 400px;
+		display:block;
+		}
+	</style>
+	<style>
+	p{
+	font-size: 1.5rem;
+	}
+	</style>
+	<meta name="viewport" content="width=device-width, initial-scale = 1.0">
 </head>
 <body>
 
 	<h1>Peak Start Percentage Calculator</h1>
 	
-	<button onclick="incrementStarts()">Start</button>
+	<button class="bigButton" onclick="incrementStarts()">Start</button>
 	<p>Starts: <span id="starts">0</span></p>
 	
-	<button onclick="incrementNoStarts()">No Start</button>
+	<button class="bigButton" onclick="incrementNoStarts()">No Start</button>
 	<p>No-Starts: <span id="noStarts">0</span></p>
 	
-	<button onclick="reset()">Reset</button>
+	<button class="bigButton" onclick="reset()">Reset</button>
 	
 	<p>Total: <span id="total">0</span></p>
 	
-	<p>Average: <span id="average">0</span>%</p>
+	<p>Start Chance: <span id="average">0</span>%</p>
 	
-	<button onclick="toggleSaving()">Toggle Saving (WIP, NOT FUNCTIONAL)</button>
+	<button class="bigButton" onclick="toggleSaving()">Toggle Saving</button>
 	<p>Saving Enabled? <span id="savingOn">DISABLED</span></p>
+	
+	<p>Start Streak: <span id="consecutiveStarts">0</span></p>
+	
+	<p>No-Start Streak: <span id="consecutiveNoStarts">0</span></p>
 	
 	<script>
 		let starts = 0;
@@ -28,24 +47,50 @@
 		let average = 0;
 		let total = 0;
 		let savingOn = false;
+		let consecutiveStarts = 0;
+		let consecutiveNoStarts = 0;
 		
 		function incrementStarts() {
 		starts++;
-		document.getElementById("starts").textContent = starts;
+		document.getElementById("starts").textContent = starts
+		consecutiveStarts++;
+		document.getElementById("consecutiveStarts").textContent = consecutiveStarts
+		consecutiveNoStarts = 0;
+		document.getElementById("consecutiveNoStarts").textContent = consecutiveNoStarts
+		if(savingOn === true) {
+		localStorage.setItem("starts",starts);
+		localStorage.setItem("consecutiveStarts",consecutiveStarts);
+		localStorage.setItem("consecutiveNoStarts",consecutiveNoStarts);
+		};
 		doAverage();
 		}
 		
 		function incrementNoStarts(){
 		noStarts++;
 		document.getElementById("noStarts").textContent = noStarts;
+		consecutiveNoStarts++;
+		document.getElementById("consecutiveNoStarts").textContent = consecutiveNoStarts
+		consecutiveStarts = 0;
+		document.getElementById("consecutiveStarts").textContent = consecutiveStarts
+		if(savingOn === true) {
+		localStorage.setItem("noStarts",noStarts);
+		localStorage.setItem("consecutiveStarts",consecutiveStarts);
+		localStorage.setItem("consecutiveNoStarts",consecutiveNoStarts);
+		};
 		doAverage();
 		}
 		
 		function doAverage(){
 		total = starts + noStarts;
 		document.getElementById("total").textContent = total;
+		if(savingOn === true) {
+		localStorage.setItem("total",total);
+		};
 		average = (starts /(total))*100;
 		document.getElementById("average").textContent = average;
+		if(savingOn === true) {
+		localStorage.setItem("average",average);
+		};
 		}
 		
 		function reset(){
@@ -53,16 +98,48 @@
 		noStarts = 0;
 		average = 0;
 		total = 0;
+		consecutiveStarts = 0;
+		consecutiveNoStarts = 0;
+		localStorage.setItem("starts",starts);
+		localStorage.setItem("noStarts",noStarts);
+		localStorage.setItem("average",average);
+		localStorage.setItem("total",total);
+		localStorage.setItem("consecutiveStarts",consecutiveStarts);
+		localStorage.setItem("consecutiveNoStarts",consecutiveNoStarts);
 		document.getElementById("starts").textContent = starts;
 		document.getElementById("noStarts").textContent = noStarts;
 		document.getElementById("total").textContent = total;
 		document.getElementById("average").textContent = average;
+		document.getElementById("consecutiveStarts").textContent = consecutiveStarts;
+		document.getElementById("consecutiveNoStarts").textContent = consecutiveNoStarts
 		}
 		
 		function toggleSaving() {
 		savingOn = !savingOn;
 		document.getElementById("savingOn").textContent = savingOn ? "ENABLED" : "DISABLED";
+		localStorage.setItem("savingOn",savingOn);
 		}
+		
+		window.onload = function() {
+		const savedToggle = localStorage.getItem("savingOn");
+		
+		if(savedToggle ==="true"){
+		savingOn = true;
+		document.getElementById("savingOn").textContent = "ENABLED";
+		starts = Number(localStorage.getItem("starts")) || 0;
+		noStarts = Number(localStorage.getItem("noStarts")) || 0;
+		average = Number(localStorage.getItem("average")) || 0;
+		total = Number(localStorage.getItem("total")) || 0;
+		consecutiveStarts = Number(localStorage.getItem("consecutiveStarts")) || 0;
+		consecutiveNoStarts = Number(localStorage.getItem("consecutiveNoStarts")) || 0;
+		document.getElementById("starts").textContent = starts;
+		document.getElementById("noStarts").textContent = noStarts;
+		document.getElementById("total").textContent = total;
+		document.getElementById("average").textContent = average;
+		document.getElementById("consecutiveStarts").textContent = consecutiveStarts;
+		document.getElementById("consecutiveNoStarts").textContent = consecutiveNoStarts
+		}
+		};
 		
 	</script>
 	
